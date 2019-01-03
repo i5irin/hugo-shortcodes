@@ -1,0 +1,122 @@
+<!--
+  ネタバレ表示切り替え Hugo Shortcode
+
+  ネタバレ部分の表示非表示を切り替えるショートコード
+  spoilerタグで囲った内容をぼかし暗転させて表示する
+  ネタバレ解除ボタンを押すことでspoilerタグで囲った内容を表示する
+  パラメーター
+    title: ネタバレ解除ボタンに表示されるタイトル
+ -->
+
+<!-- ネタバレを識別するため文字 -->
+<!--  -->
+{{ $spoilerId := md5 (printf "%s%s" .Inner now) }}
+
+<div class="spoiler">
+  <input type="checkbox" id="spoiler-switch-{{ $spoilerId }}" class="spoiler-switch-{{ $spoilerId }}" />
+  <label for="spoiler-switch-{{ $spoilerId }}" class="spoiler-button">{{ .Get "title" }}</label>
+  <div class="spoiler-body">{{ .Inner }}</div>
+</div>
+
+<style>
+  /* 全体 */
+  .spoiler {
+    /* ネタバレ解除ボタンを中央に配置する目的 */
+    position: relative;
+  }
+
+  /* ネタバレ部分を暗転するオーバーレイ */
+  .spoiler-body::after {
+    background-color: rgba(73, 71, 60, 0.3);
+    filter: blur(4px);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    content: ' ';
+  }
+
+  /* ネタバレ部分 */
+  .spoiler-body {
+    filter: blur(6px);
+    user-select: none;
+    position: relative;
+  }
+
+  /* ネタバレ解除ボタン */
+  .spoiler-button {
+    cursor: pointer;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 66%;
+    z-index: 2;
+    background-color: rgb(238, 151, 76);
+    color: #f8f5f5;
+    padding: 6px 8px;
+    user-select: none;
+    font-weight: 600;
+    font-size: 24px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 4px;
+  }
+
+  .spoiler-button:hover {
+    transition: 0.4s;
+    background-color: rgb(245, 122, 14);
+  }
+
+  /* ネタバレ解除状態を示すチェックボックス */
+  .spoiler-switch- {
+      {
+      $spoilerId
+    }
+  }
+
+    {
+    display: none;
+  }
+
+  /* ネタバレ解除されたときのネタバレ解除ボタン */
+  .spoiler-switch- {
+      {
+      $spoilerId
+    }
+  }
+
+  :checked+.spoiler-button {
+    display: none;
+  }
+
+  /* ネタバレ解除されたときのネタバレ部分 */
+  .spoiler-switch- {
+      {
+      $spoilerId
+    }
+  }
+
+  :checked~.spoiler-body {
+    filter: blur(0);
+    user-select: auto;
+    transition: 0.4s;
+  }
+
+  /* ネタバレ解除されたときのネタバレを暗転していたオーバーレイ */
+  .spoiler-switch- {
+      {
+      $spoilerId
+    }
+  }
+
+  :checked~.spoiler-body::after {
+    filter: blur(0);
+    transition: 0.4s;
+    background-color: rgba(0, 0, 0, 0);
+  }
+</style>
